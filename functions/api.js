@@ -8,5 +8,5 @@ router.get("/", (req, res) => {
     res.json({"Status": "Online"});
 });
 
-app.use("/", router);
+app.use("/api", router);
 module.exports.handler = serverless(app);
