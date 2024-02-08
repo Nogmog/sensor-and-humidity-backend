@@ -3,9 +3,12 @@ const router = express.Router();
 
 const mcu = require("./mcu.controller");
 
-router.route("/modules/add")
+router.route("/modules")
     .get(mcu.showPage)
     .post(mcu.addMCUInformation);
+
+router.route("/modules/:id")
+    .get(mcu.getMCUInformationByMac);
 
     
 module.exports = router;

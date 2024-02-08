@@ -15,10 +15,9 @@ const addMCUInformation = (req, res) => {
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     
-    //const result = await mcu.addInformation(req.body);
-    //return res.sendStatus(201);
     mcu.addInformation(req.body, (data, err) => {
         if(err) {
+            console.log(err);
             return res.sendStatus(500);
         };
 
@@ -26,7 +25,19 @@ const addMCUInformation = (req, res) => {
     })
 }
 
+const getMCUInformationByMac = (req, res) => {
+    let id = req.params.id;
+
+    mcu.getInformationByMac(id, (data, err) => {
+        if(err){
+            return res.status(500).send(err);
+        }
+        return res.status(200).send(data);
+    })
+}
+
 module.exports = {
     showPage: showPage,
-    addMCUInformation: addMCUInformation
+    addMCUInformation: addMCUInformation,
+    getMCUInformationByMac: getMCUInformationByMac
 }
