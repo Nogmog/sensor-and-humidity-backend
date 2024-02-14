@@ -12,14 +12,28 @@ const addInformation = (mcu, done) => {
 }
 
 const getInformationByMac = (id, done) => {
-    const SQL = "SELECT * FROM MCU_data WHERE mac_address=?"
+    const SQL = "SELECT * FROM MCU_data WHERE mac_address=?;"
 
     db.query(SQL, [id], function(err, result) {
         if(err) return done(null, err)
-        return done(result[0], null);
+        return done(result, null);
     })
 }
+
+const getMacAddressFromToken = (token, done) => {
+    const SQL  = "SELECT * FROM device_auth WHERE token=?;";
+
+    db.query(SQL, [token], function(err, result) {
+        if(err) return done(null, err);
+        if(result[0] === undefined || result[0] === null) return done(null, 404);
+        
+        return done(result[0], null)
+    })
+}
+
+
 module.exports = {
     addInformation: addInformation,
-    getInformationByMac: getInformationByMac
+    getInformationByMac: getInformationByMac,
+    getMacAddressFromToken: getMacAddressFromToken
 };

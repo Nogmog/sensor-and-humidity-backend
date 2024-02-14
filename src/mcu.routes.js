@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const mcu = require("./mcu.controller");
+const auth = require("./middleware");
+
 
 router.route("/modules")
     .get(mcu.showPage)
-    .post(mcu.addMCUInformation);
+    .post(auth.macAuthentication, mcu.addMCUInformation);
 
 router.route("/modules/:id")
     .get(mcu.getMCUInformationByMac);
