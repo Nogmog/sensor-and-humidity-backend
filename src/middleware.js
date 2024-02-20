@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const mcu = require("./auth.models");
+const auth = require("./auth.models");
 
 
 const macAuthentication = function(req, res, next){
@@ -18,7 +18,7 @@ const macAuthentication = function(req, res, next){
         return res.sendStatus(401);
     }
 
-    mcu.getMacAddressFromToken(device_auth, (result, err) => {
+    auth.getMacAddressFromToken(device_auth, (result, err) => {
         if(err === 404) return res.sendStatus(401);
         if(err) return res.sendStatus(500);
         
