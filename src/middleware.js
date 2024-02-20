@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const mcu = require("./mcu.models");
+const mcu = require("./auth.models");
 
 
 const macAuthentication = function(req, res, next){
