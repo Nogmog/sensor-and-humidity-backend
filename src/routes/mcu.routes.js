@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const mcu = require("./mcu.controller");
-const auth = require("./middleware");
+const mcu = require("../controller/mcu.controller");
+const auth = require("../middleware");
 
 
 router.route("/modules")

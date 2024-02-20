@@ -13,7 +13,7 @@ app.get("/api", (req, res) => {
 });
 
 // Endpoints
-const mcuRouter = require("../src/mcu.routes");
+const mcuRouter = require("../src/routes/mcu.routes");
 
 const HTTP_LINK = "/api";
 

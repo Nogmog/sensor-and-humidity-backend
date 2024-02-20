@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require("../../db");
 
 const getMacAddressFromToken = (token, done) => {
     const SQL  = "SELECT * FROM device_info WHERE token=?;";

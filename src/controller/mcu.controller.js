@@ -1,4 +1,4 @@
-const mcu = require("./mcu.models");
+const mcu = require("../models/mcu.models");
 const Joi = require("joi");
 
 const showPage = (req, res) => {
