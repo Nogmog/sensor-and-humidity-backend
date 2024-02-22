@@ -14,11 +14,13 @@ app.get("/api", (req, res) => {
 
 // Endpoints
 const mcuRouter = require("../src/routes/mcu.routes");
+const groupRouter = require("../src/routes/group.routes");
 
 const HTTP_LINK = "/api";
 
 app.use(HTTP_LINK, router); 
 app.use(HTTP_LINK, mcuRouter);
+app.use(HTTP_LINK, groupRouter);
 
 // // page not found
 app.use(function(req, res){
