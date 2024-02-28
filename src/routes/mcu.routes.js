@@ -10,10 +10,10 @@ router.route("/modules")
     .post(auth.macAuthentication, mcu.addMCUInformation);
 
 router.route("/modules/add")
-    .post(mcu.addNewDevice)
+    .post(auth.loggedInAuth, mcu.addNewDevice)
 
 router.route("/modules/:id")
-    .get(mcu.getMCUInformationByMac);
+    .get(auth.loggedInAuth, mcu.getMCUInformationByMac);
 
     
 module.exports = router;

@@ -3,7 +3,8 @@ const group = require("../models/group.models");
 const Joi = require("joi");
 
 const getAllDevices = (req, res) => {
-    group.getAllDevices((data, err) => {
+    let user_id = res.locals.user_id;
+    group.getAllDevices(user_id, (data, err) => {
         if(err === 404) return res.sendStatus(404);
         if(err) return res.sendStatus(500);
 

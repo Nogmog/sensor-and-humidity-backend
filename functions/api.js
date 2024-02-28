@@ -6,7 +6,7 @@ const app = express();
 const router = express.Router();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors()); //cryptographic signing
 
 app.get("/api", (req, res) => {
     res.json({"status": "Online"});

@@ -1,9 +1,9 @@
 const db = require("../../db");
 
-const getAllDevices = (done) => {
-    const SQL = "SELECT mac_address, name, group_id FROM device_info;"
+const getAllDevices = (user_id, done) => {
+    const SQL = "SELECT mac_address, name, group_id FROM device_info WHERE connected_user=?;"
 
-    db.query(SQL, function(err, result){
+    db.query(SQL, [user_id], function(err, result){
         if(err) return done(null, err)
         if(result[0] === undefined || result[0] === null) return done(null, 404);
 

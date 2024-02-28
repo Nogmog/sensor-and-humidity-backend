@@ -6,19 +6,17 @@ const auth = require("../middleware");
 
 
 router.route("/group")
-    .get(group.getAllDevices);
+    .get(auth.loggedInAuth, group.getAllDevices);
     
 
 router.route("/group/add")
-    .post(group.addNewGroup);
+    .post(auth.loggedInAuth, group.addNewGroup);
 
 router.route("/group/:id")
-    .get(group.getDevicesWithId)
-    .put(group.moveDeviceGroup)
-    .delete(group.deleteGroup);
+    .get(auth.loggedInAuth, group.getDevicesWithId)
+    .put(auth.loggedInAuth, group.moveDeviceGroup)
+    .delete(auth.loggedInAuth, group.deleteGroup);
 
-// router.route("/modules/:id")
-//     .get(mcu.getMCUInformationByMac);
 
     
 module.exports = router;

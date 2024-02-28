@@ -6,7 +6,7 @@ const auth = require("./models/auth.models");
 const macAuthentication = function(req, res, next){
     const schema = Joi.object({
         "mac_address": Joi.string().required()
-    }).options({ allowUnknown: true})
+    }).options({ allowUnknown: true })
 
     const { error } = schema.validate(req.body);
     if(error) return res.status(401).send(error.details[0].message);
@@ -33,6 +33,37 @@ const macAuthentication = function(req, res, next){
     
 }
 
+
+const loggedInAuth = function(req, res, next){
+    const schema = Joi.object({
+        "user_token": Joi.string().required()
+    }).options({ allowUnknown: true })
+
+    const { error } = schema.validate(req.body);
+    if(error) return res.status(401).send(error.details[0].message);
+
+    let session_token = req.get("session-token");
+    let user_token = req.body.user_token;
+
+    if(user_token === undefined || session_token === undefined){
+        return res.status(401).send("No token sent");
+    }
+
+    auth.getSessionTokenFromUser(user_token, (result, err) => {
+        if(err === 404) return res.sendStatus(401);
+        if(err) return res.sendStatus(500);
+
+        if(session_token === result.session_token){
+            res.locals.user_id = result.user_id
+            
+            next()
+        }else{
+            return res.status(401).send("Incorrect login")
+        }
+    })
+}
+
 module.exports = {
-    macAuthentication: macAuthentication
+    macAuthentication: macAuthentication,
+    loggedInAuth: loggedInAuth
 }
