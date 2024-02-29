@@ -23,7 +23,7 @@ const getMCUInformationByMac = (req, res) => {
     let id = req.params.id;
 
     mcu.getInformationByMac(id, (data, err) => {
-        // if(err === 404) return res.sendStatus(404);
+        if(err === 404) return res.status(404).send("Device not found");
         if(err) return res.status(500).send(err);
 
         return res.status(200).send(data);
@@ -41,16 +41,17 @@ const addNewDevice = (req, res) => {
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     // NEED TO CREATE TOKEN!
-
+    let token = "temp";
     let user_id = res.locals.user_id;
-    mcu.addDevice(req.body, "temp", user_id, (data, err) => {
+    
+    mcu.addDevice(req.body, token, user_id, (data, err) => {
         if(err) return res.sendStatus(500);
 
         mcu.getDeviceTokenFromMac(req.body.mac_address, (data, err)  => {
             if(err === 404) return res.sendStatus(404);
             if(err) return res.sendStatus(500);
             
-            return res.status(201).send(data[0]);
+            return res.status(201).send(data);
         })
         
     })

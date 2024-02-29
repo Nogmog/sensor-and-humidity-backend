@@ -5,7 +5,7 @@ const Joi = require("joi");
 const getAllDevices = (req, res) => {
     let user_id = res.locals.user_id;
     group.getAllDevices(user_id, (data, err) => {
-        if(err === 404) return res.sendStatus(404);
+        if(err === 404) return res.status(404).send("No devices found in group");
         if(err) return res.sendStatus(500);
 
         return res.status(200).send(data);
@@ -15,7 +15,7 @@ const getAllDevices = (req, res) => {
 const getDevicesWithId = (req, res) => {
     let id = req.params.id;
     group.getDevicesFromId(id, (data, err) => {
-        if(err === 404) return res.sendStatus(404);
+        if(err === 404) return res.status(404).send("No devices found in group");
         if(err) return res.sendStatus(500);
 
         return res.status(200).send(data);
