@@ -32,10 +32,10 @@ const updateDeviceGroup = (mac, group_id, done) => {
     })
 }
 
-const addNewGroup = (name, done) => {
-    const SQL = "INSERT INTO device_group(name) VALUES(?);"
+const addNewGroup = (name, id, done) => {
+    const SQL = "INSERT INTO device_group(name, connected_user) VALUES(?, ?);"
 
-    db.query(SQL, [name], function(err, result){
+    db.query(SQL, [name, id], function(err, result){
         if(err) return done(null, err)
         return done(result, null)
     })
@@ -70,7 +70,7 @@ const getGroup = (id, done) => {
         if(err) return done(null, err)
         if(result[0] === undefined || result[0] === null) return done(null, 404);
 
-        return done(result, null);
+        return done(result[0], null);
     })
 }
 

@@ -1,9 +1,6 @@
 const mcu = require("../models/mcu.models");
 const Joi = require("joi");
 
-const showPage = (req, res) => {
-    res.status(200).send("urmum: lol");
-}
 
 const addMCUInformation = (req, res) => {
     const schema = Joi.object({
@@ -35,6 +32,7 @@ const getMCUInformationByMac = (req, res) => {
 
 const addNewDevice = (req, res) => {
     const schema = Joi.object({
+        "user_token": Joi.string().required(),
         "mac_address": Joi.string().required(),
         "name": Joi.string().required(),
         "group_id": Joi.number().required()
@@ -42,8 +40,10 @@ const addNewDevice = (req, res) => {
 
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+    // NEED TO CREATE TOKEN!
 
-    mcu.addDevice(req.body, "temp", (data, err) => {
+    let user_id = res.locals.user_id;
+    mcu.addDevice(req.body, "temp", user_id, (data, err) => {
         if(err) return res.sendStatus(500);
 
         mcu.getDeviceTokenFromMac(req.body.mac_address, (data, err)  => {
@@ -59,7 +59,6 @@ const addNewDevice = (req, res) => {
 }
 
 module.exports = {
-    showPage: showPage,
     addMCUInformation: addMCUInformation,
     getMCUInformationByMac: getMCUInformationByMac,
     addNewDevice: addNewDevice

@@ -21,10 +21,10 @@ const getInformationByMac = (id, done) => {
     })
 }
 
-const addDevice = (info, token, done) => {
-    const SQL = "INSERT INTO device_info(mac_address, token, name, group_id) VALUES(?, ?, ?, ?);"
+const addDevice = (info, token, id, done) => {
+    const SQL = "INSERT INTO device_info(mac_address, token, name, group_id, connected_user) VALUES(?, ?, ?, ?, ?);"
 
-    let values = [info.mac_address, token, info.name, info.group_id];
+    let values = [info.mac_address, token, info.name, info.group_id, id];
     db.query(SQL, values, function(err, result){
         if(err) return done(null, err)
         return done(result, null)
