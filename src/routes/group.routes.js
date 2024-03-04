@@ -6,8 +6,7 @@ const auth = require("../middleware");
 
 
 router.route("/group")
-    .get(auth.loggedInAuth, group.getAllDevices);
-    
+    .get(auth.loggedInAuth, group.getAllGroups);
 
 router.route("/group/add")
     .post(auth.loggedInAuth, group.addNewGroup);

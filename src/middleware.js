@@ -23,6 +23,7 @@ const macAuthentication = function(req, res, next){
         if(err) return res.sendStatus(500);
         
         if(result.mac_address === mac_address){
+            res.locals.user_id = result.connected_user;
             next();
         }
         else{

@@ -6,7 +6,7 @@ const app = express();
 const router = express.Router();
 
 app.use(express.json());
-app.use(cors()); //cryptographic signing
+app.use(cors());
 
 app.get("/api", (req, res) => {
     res.json({"status": "Online"});
@@ -15,16 +15,18 @@ app.get("/api", (req, res) => {
 // Endpoints
 const mcuRouter = require("../src/routes/mcu.routes");
 const groupRouter = require("../src/routes/group.routes");
+const userRouter = require("../src/routes/user.routes");
 
 const HTTP_LINK = "/api";
 
 app.use(HTTP_LINK, router); 
 app.use(HTTP_LINK, mcuRouter);
 app.use(HTTP_LINK, groupRouter);
+app.use(HTTP_LINK, userRouter);
 
 // // page not found
 app.use(function(req, res){
-    res.sendStatus(404);
+    res.status(404).send("Page not found");
 })
 
 module.exports.handler = serverless(app);

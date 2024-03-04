@@ -1,15 +1,5 @@
 const db = require("../../db");
 
-const getAllDevices = (user_id, done) => {
-    const SQL = "SELECT mac_address, name, group_id FROM device_info WHERE connected_user=?;"
-
-    db.query(SQL, [user_id], function(err, result){
-        if(err) return done(null, err)
-        if(result[0] === undefined || result[0] === null) return done(null, 404);
-
-        return done(result, null)
-    })
-}
 
 const getDevicesFromId = (id, done) => {
     const SQL = "SELECT mac_address, name, group_id FROM device_info WHERE group_id=?;"
@@ -74,13 +64,24 @@ const getGroup = (id, done) => {
     })
 }
 
+const getAllGroupsFromUser = (id, done) => {
+    const SQL = "SELECT * FROM device_group WHERE connected_user=?;"
+
+    db.query(SQL, [id], function(err, result){
+        if(err) return done(null, err)
+        if(result[0] === undefined || result[0] === null) return done(null, 404);
+
+        return done(result, null);
+    })
+}
+
 
 module.exports = {
-    getAllDevices: getAllDevices,
     getDevicesFromId: getDevicesFromId,
     updateDeviceGroup: updateDeviceGroup,
     addNewGroup: addNewGroup,
     getGroupIdFromMac: getGroupIdFromMac,
     deleteGroup: deleteGroup,
-    getGroup: getGroup
+    getGroup: getGroup,
+    getAllGroupsFromUser: getAllGroupsFromUser
 };

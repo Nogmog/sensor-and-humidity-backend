@@ -6,6 +6,7 @@ const auth = require("../middleware");
 
 
 router.route("/modules")
+    .get(auth.loggedInAuth, mcu.getAllDevices)
     .post(auth.macAuthentication, mcu.addMCUInformation);
 
 router.route("/modules/add")

@@ -1,9 +1,9 @@
 const db = require("../../db");
 
 
-const addInformation = (mcu, done) => {
-    const SQL = "INSERT INTO MCU_data (mac_address, temperature, humidity, date) VALUES (?, ?, ?, CURRENT_TIMESTAMP);"
-    let values = [mcu.mac_address, mcu.temperature, mcu.humidity];
+const addInformation = (mcu, user_id, done) => {
+    const SQL = "INSERT INTO MCU_data (mac_address, temperature, humidity, date, connected_user) VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?);"
+    let values = [mcu.mac_address, mcu.temperature, mcu.humidity, user_id];
 
     db.query(SQL, values, function(err, result) {
         if (err) return done(null, err);
@@ -42,9 +42,21 @@ const getDeviceTokenFromMac = (mac, done) => {
     })
 }
 
+const getAllDevices = (user_id, done) => {
+    const SQL = "SELECT mac_address, name, group_id FROM device_info WHERE connected_user=?;"
+
+    db.query(SQL, [user_id], function(err, result){
+        if(err) return done(null, err)
+        if(result[0] === undefined || result[0] === null) return done(null, 404);
+
+        return done(result, null)
+    })
+}
+
 module.exports = {
     addInformation: addInformation,
     getInformationByMac: getInformationByMac,
     addDevice: addDevice,
-    getDeviceTokenFromMac: getDeviceTokenFromMac
+    getDeviceTokenFromMac: getDeviceTokenFromMac,
+    getAllDevices: getAllDevices
 };

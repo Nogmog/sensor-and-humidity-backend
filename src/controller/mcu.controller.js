@@ -11,8 +11,9 @@ const addMCUInformation = (req, res) => {
 
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
-    
-    mcu.addInformation(req.body, (data, err) => {
+    let user_id = res.locals.user_id;
+
+    mcu.addInformation(req.body, user_id, (data, err) => {
         if(err) return res.sendStatus(500);
 
         return res.sendStatus(201);
@@ -59,8 +60,20 @@ const addNewDevice = (req, res) => {
 
 }
 
+const getAllDevices = (req, res) => {
+    let user_id = res.locals.user_id;
+    mcu.getAllDevices(user_id, (data, err) => {
+        if(err === 404) return res.status(404).send("No devices found");
+        if(err) return res.sendStatus(500);
+
+        return res.status(200).send(data);
+    })
+}
+
+
 module.exports = {
     addMCUInformation: addMCUInformation,
     getMCUInformationByMac: getMCUInformationByMac,
-    addNewDevice: addNewDevice
+    addNewDevice: addNewDevice,
+    getAllDevices: getAllDevices
 }

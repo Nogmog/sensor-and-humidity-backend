@@ -2,20 +2,10 @@ const group = require("../models/group.models");
 
 const Joi = require("joi");
 
-const getAllDevices = (req, res) => {
-    let user_id = res.locals.user_id;
-    group.getAllDevices(user_id, (data, err) => {
-        if(err === 404) return res.status(404).send("No devices found in group");
-        if(err) return res.sendStatus(500);
-
-        return res.status(200).send(data);
-    })
-}
-
 const getDevicesWithId = (req, res) => {
     let id = req.params.id;
     group.getDevicesFromId(id, (data, err) => {
-        if(err === 404) return res.status(404).send("No devices found in group");
+        if(err === 404) return res.status(404).send("Group not found / no devices found in group");
         if(err) return res.sendStatus(500);
 
         return res.status(200).send(data);
@@ -105,11 +95,23 @@ const deleteGroup = (req, res) => {
     })
 }
 
+const getAllGroups = (req, res) => {
+    let user_id = res.locals.user_id;
+
+    group.getAllGroupsFromUser(user_id, (data, err) => {
+        if(err === 404) return res.status(404).send("No groups found");
+        if(err) return res.sendStatus(500);
+
+        return res.status(200).send(data);
+    })
+    
+}
+
 
 module.exports = {
-    getAllDevices: getAllDevices,
     getDevicesWithId: getDevicesWithId,
     addNewGroup: addNewGroup,
     moveDeviceGroup: moveDeviceGroup,
-    deleteGroup: deleteGroup
+    deleteGroup: deleteGroup,
+    getAllGroups: getAllGroups
 }
