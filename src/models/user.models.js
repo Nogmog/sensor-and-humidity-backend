@@ -1,6 +1,17 @@
 const db = require("../../db");
 const crypto = require("crypto");
 
+const createNewAccount = (data, done) => {
+    const SQL = "INSERT INTO user_data(user_token, name, email) VALUES (?, ?, ?);";
+
+    let values = [data.user_token, data.name, data.email]
+
+    db.query(SQL, values, function(err, result){
+        if(err) return done(null, err)
+        return done(result[0], null)
+    })
+}
+
 
 const getUserInformationFromUID = (uid, done) => {
     const SQL = "SELECT * FROM user_data WHERE user_token=?;"
@@ -19,7 +30,7 @@ const createNewSessionTokenForUser = (uid, done) => {
 
     db.query(SQL, [token, uid], function(err, result) {
         if(err) return done(null, err)
-        done(token, null);
+        return done(token, null);
     })
 }
 
@@ -28,11 +39,12 @@ const removeSessionToken = (uid, done) => {
 
     db.query(SQL, [uid], function(err, result) {
         if(err) return done(err)
-        done(null);
+        return done(null);
     })
 }
 
 module.exports = {
+    createNewAccount: createNewAccount,
     getUserInformationFromUID: getUserInformationFromUID,
     createNewSessionTokenForUser: createNewSessionTokenForUser,
     removeSessionToken: removeSessionToken

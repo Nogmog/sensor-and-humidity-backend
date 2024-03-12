@@ -4,6 +4,8 @@ const router = express.Router();
 const user = require("../controller/user.controller");
 const auth = require("../middleware");
 
+router.route("/user/create")
+    .post(user.createAccount);
 
 router.route("/user/login")
     .post(user.userLogin);

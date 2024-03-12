@@ -2,6 +2,25 @@ const user = require("../models/user.models");
 const Joi = require("joi");
 
 
+const createAccount = (req, res) => {
+    const schema = Joi.object({
+        "user_token": Joi.string().required(),
+        "name": Joi.string().required(),
+        "email": Joi.string().email({tlds: { allow: false }}).required()
+    })
+
+    const { error } = schema.validate(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    user.createNewAccount(req.body, (data, err) => {
+        if(err) return res.sendStatus(500)
+
+        return res.sendStatus(201);
+    })
+
+
+}
+
 const userLogin = (req, res) => {
     const schema = Joi.object({
         "user_token": Joi.string().required(),
@@ -43,6 +62,7 @@ const userLogout = (req, res) => {
 
 
 module.exports = {
+    createAccount: createAccount,
     userLogin: userLogin,
     userLogout: userLogout
 }
