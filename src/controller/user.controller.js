@@ -4,25 +4,40 @@ const Joi = require("joi");
 
 const userLogin = (req, res) => {
     const schema = Joi.object({
-        "user_token": Joi.string().required()
+        "user_token": Joi.string().required(),
+        "email": Joi.string().email({tlds: { allow: false }}).required()
     })
 
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
-    return res.sendStatus(501);
+    user.getUserInformationFromUID(req.body.user_token, (data, err) => {
+        if(err === 404) return res.status(404).send("User not found");
+        if(err) return res.sendStatus(500);
+
+        // check data given has matching email
+        if(data.email == req.body.email){
+            user.createNewSessionTokenForUser(data.user_token, (data, err) => {
+                if(err) return res.sendStatus(500);
+                return res.status(200).send({"session-token": data})
+            })
+        }
+        else{
+            return res.sendStatus(401);
+        }
+    })
+
+    // return res.sendStatus(501);
 
 }
 
 const userLogout = (req, res) => {
-    const schema = Joi.object({
-        "user_token": Joi.string().required()
+
+    user.removeSessionToken(req.body.user_token, (err) => {
+        if(err) return res.sendStatus(500)
+
+        return res.sendStatus(200)
     })
-
-    const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-
-    return res.sendStatus(501);
 }
 
 

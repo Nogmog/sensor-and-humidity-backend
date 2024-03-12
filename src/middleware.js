@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const auth = require("./models/auth.models");
 
-
+// MCU info
 const macAuthentication = function(req, res, next){
     const schema = Joi.object({
         "mac_address": Joi.string().required()
@@ -34,7 +34,7 @@ const macAuthentication = function(req, res, next){
     
 }
 
-
+// user data
 const loggedInAuth = function(req, res, next){
     const schema = Joi.object({
         "user_token": Joi.string().required()
@@ -43,8 +43,8 @@ const loggedInAuth = function(req, res, next){
     const { error } = schema.validate(req.body);
     if(error) return res.status(401).send(error.details[0].message);
 
-    let session_token = req.get("session-token");
     let user_token = req.body.user_token;
+    let session_token = req.get("session-token");
 
     if(user_token === undefined || session_token === undefined){
         return res.status(401).send("No token sent");
