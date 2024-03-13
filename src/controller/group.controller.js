@@ -100,7 +100,7 @@ const getAllGroups = (req, res) => {
 
     group.getAllGroupsFromUser(user_id, (data, err) => {
         if(err === 404) return res.status(404).send("No groups found");
-        if(err) return res.sendStatus(500);
+        if(err) return res.status(500).send(err);
 
         return res.status(200).send(data);
     })
