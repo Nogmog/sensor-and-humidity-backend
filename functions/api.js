@@ -3,10 +3,17 @@ const serverless = require("serverless-http");
 const cors = require("cors");
 
 const app = express();
-const router = express.Router();
+
+// let corsOptions = {
+//     origin: "http://localhost:5000",
+//     optionsSuccessStatus: 200
+// }
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors(corsOptions));
+
+const router = express.Router();
+router.use(cors());
 
 app.get("/api", (req, res) => {
     res.json({"status": "Online"});
