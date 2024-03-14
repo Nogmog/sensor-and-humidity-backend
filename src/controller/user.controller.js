@@ -52,7 +52,7 @@ const userLogin = (req, res) => {
 
 const userLogout = (req, res) => {
 
-    user.removeSessionToken(req.body.user_token, (err) => {
+    user.removeSessionToken(req.query.user, (err) => {
         if(err) return res.sendStatus(500)
 
         return res.sendStatus(200)

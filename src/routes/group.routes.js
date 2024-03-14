@@ -12,7 +12,7 @@ router.route("/group/add")
     .post(auth.loggedInAuth, group.addNewGroup);
 
 router.route("/group/:id")
-    .get(auth.loggedInAuth, group.getDevicesWithId)
+    .get(auth.loggedInAuth, group.getDevicesWithGroupId)
     .put(auth.loggedInAuth, group.moveDeviceGroup)
     .delete(auth.loggedInAuth, group.deleteGroup);
 

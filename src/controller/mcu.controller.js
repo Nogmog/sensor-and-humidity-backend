@@ -33,7 +33,6 @@ const getMCUInformationByMac = (req, res) => {
 
 const addNewDevice = (req, res) => {
     const schema = Joi.object({
-        "user_token": Joi.string().required(),
         "mac_address": Joi.string().required(),
         "name": Joi.string().required(),
         "group_id": Joi.number().required()

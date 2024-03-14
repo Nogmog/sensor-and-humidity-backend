@@ -36,17 +36,11 @@ const macAuthentication = function(req, res, next){
 
 // user data
 const loggedInAuth = function(req, res, next){
-    const schema = Joi.object({
-        "user_token": Joi.string().required()
-    }).options({ allowUnknown: true })
 
-    const { error } = schema.validate(req.body);
-    if(error) return res.status(401).send(error.details[0].message);
-
-    let user_token = req.body.user_token;
+    let user_token = req.query.user
     let session_token = req.get("session-token");
 
-    if(user_token === undefined || session_token === undefined){
+    if(user_token === undefined || session_token === undefined || !user_token){
         return res.status(401).send("No token sent");
     }
 

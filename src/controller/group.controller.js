@@ -2,7 +2,7 @@ const group = require("../models/group.models");
 
 const Joi = require("joi");
 
-const getDevicesWithId = (req, res) => {
+const getDevicesWithGroupId = (req, res) => {
     let id = req.params.id;
     group.getDevicesFromId(id, (data, err) => {
         if(err === 404) return res.status(404).send("Group not found / no devices found in group");
@@ -14,7 +14,6 @@ const getDevicesWithId = (req, res) => {
 
 const addNewGroup = (req, res) => {
     const schema = Joi.object({
-        "user_token": Joi.string().required(),
         "name": Joi.string().required()
     })
 
@@ -31,7 +30,6 @@ const addNewGroup = (req, res) => {
 
 const moveDeviceGroup = (req, res) => {
     const schema = Joi.object({
-        "user_token": Joi.string().required(),
         "mac_address": Joi.string().required()
     })
 
@@ -109,7 +107,7 @@ const getAllGroups = (req, res) => {
 
 
 module.exports = {
-    getDevicesWithId: getDevicesWithId,
+    getDevicesWithGroupId: getDevicesWithGroupId,
     addNewGroup: addNewGroup,
     moveDeviceGroup: moveDeviceGroup,
     deleteGroup: deleteGroup,
