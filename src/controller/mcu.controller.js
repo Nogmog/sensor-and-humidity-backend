@@ -24,7 +24,7 @@ const getMCUInformationByMac = (req, res) => {
     let id = req.params.id;
 
     mcu.getInformationByMac(id, (data, err) => {
-        if(err === 404) return res.status(404).send("Device not found");
+        if(err === 404) return res.status(404).send({"Error": "Device not found"});
         if(err) return res.status(500).send(err);
 
         return res.status(200).send(data);

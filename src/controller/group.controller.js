@@ -5,7 +5,7 @@ const Joi = require("joi");
 const getDevicesWithGroupId = (req, res) => {
     let id = req.params.id;
     group.getDevicesFromId(id, (data, err) => {
-        if(err === 404) return res.status(404).send("Group not found / no devices found in group");
+        if(err === 404) return res.status(404).send({"Error" : "Group not found / no devices found in group"});
         if(err) return res.sendStatus(500);
 
         return res.status(200).send(data);
@@ -56,7 +56,7 @@ const moveDeviceGroup = (req, res) => {
             let user_id = res.locals.user_id;
             // check if authorised
             if(data.connected_user != user_id){
-                return res.status(401).send("User unauthorised for this group");
+                return res.status(401).send({"Error": "User unauthorised for this group"});
             }
 
             group.updateDeviceGroup(req.body.mac_address, id, (data, err) => {
@@ -81,7 +81,7 @@ const deleteGroup = (req, res) => {
         let user_id = res.locals.user_id;
         // check if authorised
         if(data.connected_user != user_id){
-            return res.status(401).send("User unauthorised for this group");
+            return res.status(401).send({"Error": "User unauthorised for this group"});
         }
 
         group.deleteGroup(id, (data, err) => {
@@ -97,7 +97,7 @@ const getAllGroups = (req, res) => {
     let user_id = res.locals.user_id;
 
     group.getAllGroupsFromUser(user_id, (data, err) => {
-        if(err === 404) return res.status(404).send("No groups found");
+        if(err === 404) return res.status(404).send({"Error": "No groups found"});
         if(err) return res.status(500).send(err);
 
         return res.status(200).send(data);

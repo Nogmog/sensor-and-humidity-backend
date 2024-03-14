@@ -31,7 +31,7 @@ const userLogin = (req, res) => {
     if(error) return res.status(400).send(error.details[0].message);
 
     user.getUserInformationFromUID(req.body.user_token, (data, err) => {
-        if(err === 404) return res.status(404).send("User not found");
+        if(err === 404) return res.status(404).send({"Error:": "User not found"});
         if(err) return res.sendStatus(500);
 
         // check data given has matching email
