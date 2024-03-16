@@ -8,7 +8,6 @@ const createNewAccount = (data, done) => {
 
     db.query(SQL, values, function(err, result){
         if(err) return done(null, err)
-        // console.log("db",result)
         return done(result, null)
     })
 }

@@ -24,6 +24,7 @@ const createAccount = (req, res) => {
                 })
             })
         }else if(err){
+            console.log(err)
             return res.sendStatus(500)
         }else{
             return res.status(400).send({"Error": "User already exists"})
