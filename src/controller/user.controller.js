@@ -11,12 +11,26 @@ const createAccount = (req, res) => {
 
     const { error } = schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+    // check user exists
+    user.getUserInformationFromEmail(req.body.email, (data, err) => {
+        if(err === 404){
+            user.createNewAccount(req.body, (data, err) => {
+                if(err) return res.sendStatus(500)
 
-    user.createNewAccount(req.body, (data, err) => {
-        if(err) return res.sendStatus(500)
+                // make new session for user
+                user.createNewSessionTokenForUserId(data.insertId, (data, err) => {
+                    if(err) return res.sendStatus(500);
+                    return res.status(201).send({"session-token": data})
+                })
+            })
+        }else if(err){
+            return res.sendStatus(500)
+        }else{
+            return res.status(400).send({"Error": "User already exists"})
+        }
 
-        return res.sendStatus(201);
     })
+
 
 
 }
@@ -28,7 +42,7 @@ const userLogin = (req, res) => {
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(403).send(error.details[0].message);
 
     user.getUserInformationFromUID(req.body.user_token, (data, err) => {
         if(err === 404) return res.status(404).send({"Error:": "User not found"});
@@ -36,9 +50,9 @@ const userLogin = (req, res) => {
 
         // check data given has matching email
         if(data.email == req.body.email){
-            user.createNewSessionTokenForUser(data.user_token, (data, err) => {
+            user.createNewSessionTokenForUserId(data.user_id, (token, err) => {
                 if(err) return res.sendStatus(500);
-                return res.status(200).send({"session-token": data})
+                return res.status(200).send({"session-token": token})
             })
         }
         else{
