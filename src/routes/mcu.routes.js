@@ -13,7 +13,7 @@ router.route("/modules/add")
     .post(auth.loggedInAuth, mcu.addNewDevice)
 
 router.route("/modules/:id")
-    .get(auth.loggedInAuth, mcu.getMCUInformationByMac);
+    .get(auth.loggedInAuth, mcu.getInformationByMac);
 
     
 module.exports = router;
