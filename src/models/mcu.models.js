@@ -42,6 +42,16 @@ const getDeviceTokenFromMac = (mac, done) => {
     })
 }
 
+const getDeviceFromMac = (mac, done) => {
+    const SQL = "SELECT mac_address, name, group_id, connected_user FROM device_info WHERE mac_address=?;";
+    
+    db.query(SQL, [mac], function(err, result){
+        if(err) return done(null, err)
+        if(result[0] === undefined || result[0] === null) return done(null, 404);
+
+        return done(result[0], null)
+    })
+}
 const getAllDevices = (user_id, done) => {
     const SQL = "SELECT mac_address, name, group_id FROM device_info WHERE connected_user=?;"
 
@@ -58,5 +68,6 @@ module.exports = {
     getInformationByMac: getInformationByMac,
     addDevice: addDevice,
     getDeviceTokenFromMac: getDeviceTokenFromMac,
+    getDeviceFromMac: getDeviceFromMac,
     getAllDevices: getAllDevices
 };

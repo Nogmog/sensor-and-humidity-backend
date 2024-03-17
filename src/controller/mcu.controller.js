@@ -59,6 +59,21 @@ const addNewDevice = (req, res) => {
 
 }
 
+const getDevice = (req, res) => {
+    let mac = req.params.mac;
+
+    mcu.getDeviceFromMac(mac, (data, err) => {
+        if(err === 404) return res.status(404).send("No devices found");
+        if(err) return res.sendStatus(500);
+        console.log(data.connected_user)
+        if(data.connected_user == res.locals.user_id){
+            return res.status(200).send(data);
+        }else{
+            return res.sendStatus(401);
+        }
+    })
+}
+
 const getAllDevices = (req, res) => {
     let user_id = res.locals.user_id;
     mcu.getAllDevices(user_id, (data, err) => {
@@ -74,5 +89,6 @@ module.exports = {
     addMCUInformation: addMCUInformation,
     getMCUInformationByMac: getMCUInformationByMac,
     addNewDevice: addNewDevice,
+    getDevice: getDevice,
     getAllDevices: getAllDevices
 }
