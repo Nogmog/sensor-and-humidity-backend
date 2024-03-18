@@ -6,7 +6,7 @@ const getMacAddressFromToken = (token, done) => {
     db.query(SQL, [token], function(err, result) {
         if(err) return done(null, err);
         if(result[0] === undefined || result[0] === null) return done(null, 404);
-        
+        console.log("hi!")
         return done(result[0], null)
     })
 }
