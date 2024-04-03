@@ -12,6 +12,9 @@ router.route("/modules")
 router.route("/modules/add")
     .post(auth.loggedInAuth, mcu.addNewDevice);
 
+router.route("/modules/info/group/:id")
+    .get(auth.loggedInAuth, mcu.getMCUInformationByGroup);
+
 router.route("/modules/info/:id")
     .get(auth.loggedInAuth, mcu.getMCUInformationByMac);
 
@@ -20,7 +23,7 @@ router.route("/modules/:mac")
 
 
 
-    
+
 module.exports = router;
 // const mcu = require("./mcu.controller");
 
