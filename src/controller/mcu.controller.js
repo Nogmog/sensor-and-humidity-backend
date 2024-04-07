@@ -1,5 +1,6 @@
 const mcu = require("../models/mcu.models");
 const group = require("../models/group.models");
+const crypto = require("crypto");
 
 const Joi = require("joi");
 
@@ -67,8 +68,7 @@ const addNewDevice = (req, res) => {
 
     const { error } = schema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    // NEED TO CREATE TOKEN!
-    let token = "temp";
+    let token = crypto.randomBytes(64).toString("hex");
     let user_id = res.locals.user_id;
 
     mcu.addDevice(req.body, token, user_id, (data, err) => {
