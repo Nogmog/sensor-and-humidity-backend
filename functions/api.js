@@ -16,7 +16,7 @@ const router = express.Router();
 router.use(cors());
 
 app.get("/api", (req, res) => {
-    res.json({"status": "Online"});
+    res.json({ "status": "Online" });
 });
 
 // Endpoints
@@ -26,13 +26,13 @@ const userRouter = require("../src/routes/user.routes");
 
 const HTTP_LINK = "/api";
 
-app.use(HTTP_LINK, router); 
+app.use(HTTP_LINK, router);
 app.use(HTTP_LINK, mcuRouter);
 app.use(HTTP_LINK, groupRouter);
 app.use(HTTP_LINK, userRouter);
 
 // // page not found
-app.use(function(req, res){
+app.use(function (req, res) {
     res.status(404).send("Page not found");
 })
 

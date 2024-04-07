@@ -3,56 +3,57 @@ const Joi = require("joi");
 const auth = require("./models/auth.models");
 
 // MCU info
-const macAuthentication = function(req, res, next){
+const macAuthentication = function (req, res, next) {
     const schema = Joi.object({
         "mac_address": Joi.string().required()
     }).options({ allowUnknown: true })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(401).send(error.details[0].message);
+    if (error) return res.status(401).send(error.details[0].message);
 
     let device_auth = req.get("device-auth");
     let mac_address = req.body.mac_address;
 
-    if(device_auth === undefined || mac_address === undefined){
+    if (device_auth === undefined || mac_address === undefined) {
         return res.sendStatus(401);
     }
 
-    auth.getMacAddressFromToken(device_auth, (result, err) => {
-        if(err === 404) return res.sendStatus(401);
-        if(err) return res.sendStatus(500);
-        
-        if(result.mac_address === mac_address){
+
+    auth.getTokenFromMac(mac_address, (result, err) => {
+        if (err === 404) return res.sendStatus(401);
+        if (err) return res.sendStatus(500);
+
+        if (result.token === device_auth) {
             res.locals.user_id = result.connected_user;
             next();
         }
-        else{
+        else {
             return res.sendStatus(401);
         }
-        
+
     })
-    
+
 }
 
 // user data
-const loggedInAuth = function(req, res, next){
+const loggedInAuth = function (req, res, next) {
 
     let user_token = req.query.user
     let session_token = req.get("session-token");
 
-    if(user_token === undefined || session_token === undefined || !user_token){
+    if (user_token === undefined || session_token === undefined || !user_token) {
         return res.status(401).send("No token sent");
     }
 
     auth.getSessionTokenFromUser(user_token, (result, err) => {
-        if(err === 404) return res.sendStatus(401);
-        if(err) return res.sendStatus(500);
+        if (err === 404) return res.sendStatus(401);
+        if (err) return res.sendStatus(500);
 
-        if(session_token === result.session_token){
+        if (session_token === result.session_token) {
             res.locals.user_id = result.user_id
-            
+
             next()
-        }else{
+        } else {
             return res.status(401).send("Incorrect login")
         }
     })
