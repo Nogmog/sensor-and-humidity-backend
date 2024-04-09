@@ -6,28 +6,28 @@ const createAccount = (req, res) => {
     const schema = Joi.object({
         "user_token": Joi.string().required(),
         "name": Joi.string().required(),
-        "email": Joi.string().email({tlds: { allow: false }}).required()
+        "email": Joi.string().email({ tlds: { allow: false } }).required()
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send(error.details[0].message);
     // check user exists
     user.getUserInformationFromEmail(req.body.email, (data, err) => {
-        if(err === 404){
+        if (err === 404) {
             user.createNewAccount(req.body, (data, err) => {
-                if(err) return res.sendStatus(500)
+                if (err) return res.sendStatus(500)
 
                 // make new session for user
                 user.createNewSessionTokenForUserId(data.insertId, (data, err) => {
-                    if(err) return res.sendStatus(500);
-                    return res.status(201).send({"session-token": data})
+                    if (err) return res.sendStatus(500);
+                    return res.status(201).send({ "session-token": data })
                 })
             })
-        }else if(err){
+        } else if (err) {
             console.log(err)
             return res.sendStatus(500)
-        }else{
-            return res.status(400).send({"Error": "User already exists"})
+        } else {
+            return res.status(400).send({ "Error": "User already exists" })
         }
 
     })
@@ -39,24 +39,35 @@ const createAccount = (req, res) => {
 const userLogin = (req, res) => {
     const schema = Joi.object({
         "user_token": Joi.string().required(),
-        "email": Joi.string().email({tlds: { allow: false }}).required()
+        "email": Joi.string().email({ tlds: { allow: false } }).required()
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(403).send(error.details[0].message);
+    if (error) return res.status(403).send(error.details[0].message);
 
     user.getUserInformationFromUID(req.body.user_token, (data, err) => {
-        if(err === 404) return res.status(404).send({"Error:": "User not found"});
-        if(err) return res.sendStatus(500);
+        if (err === 404) return res.status(404).send({ "Error:": "User not found" });
+        if (err) return res.sendStatus(500);
 
         // check data given has matching email
-        if(data.email == req.body.email){
-            user.createNewSessionTokenForUserId(data.user_id, (token, err) => {
-                if(err) return res.sendStatus(500);
-                return res.status(200).send({"session-token": token})
+        if (data.email == req.body.email) {
+            let userId = data.user_id
+            // check if user already has token
+            user.getSessionTokenFromUserId(userId, (token, err) => {
+                // NO TOKEN
+                if (err === 404 || !token) {
+                    user.createNewSessionTokenForUserId(userId, (token, err) => {
+                        if (err) return res.sendStatus(500);
+                        return res.status(200).send({ "session-token": token })
+                    })
+                }
+                if (err) return res.sendStatus(500);
+                // HAS TOKEN
+                return res.status(200).send({ "session-token": token })
             })
+
         }
-        else{
+        else {
             return res.sendStatus(401);
         }
     })
@@ -68,7 +79,7 @@ const userLogin = (req, res) => {
 const userLogout = (req, res) => {
 
     user.removeSessionToken(req.query.user, (err) => {
-        if(err) return res.sendStatus(500)
+        if (err) return res.sendStatus(500)
 
         return res.sendStatus(200)
     })
