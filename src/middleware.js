@@ -48,7 +48,7 @@ const loggedInAuth = function (req, res, next) {
     auth.getSessionTokenFromUser(user_token, (result, err) => {
         if (err === 404) return res.sendStatus(401);
         if (err) return res.sendStatus(500);
-
+        console.log("GIVEN:", session_token, "\nFROM DB:", result.session_token)
         if (session_token === result.session_token) {
             res.locals.user_id = result.user_id
 
