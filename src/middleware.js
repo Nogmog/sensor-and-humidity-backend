@@ -54,7 +54,7 @@ const loggedInAuth = function (req, res, next) {
 
             next()
         } else {
-            return res.status(401).send("Incorrect login")
+            return res.status(401).send({ "given": session_token, "from_db": result.session_token })
         }
     })
 }
