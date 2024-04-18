@@ -22,7 +22,7 @@ const getDataByMac = (id, done) => {
 }
 
 const getDataByGroupId = (id, done) => {
-    const SQL = "SELECT device_info.mac_address, device_info.group_id, MCU_data.temperature, MCU_data.humidity, MCU_data.date, device_info.connected_user FROM device_info INNER JOIN MCU_data ON device_info.mac_address = MCU_data.mac_address WHERE group_id=?;"
+    const SQL = "SELECT device_info.mac_address, device_info.group_id, device_info.name, MCU_data.temperature, MCU_data.humidity, MCU_data.date, device_info.connected_user FROM device_info INNER JOIN MCU_data ON device_info.mac_address = MCU_data.mac_address WHERE group_id=?;"
 
     db.query(SQL, [id], function (err, result) {
         if (err) return done(null, err)
