@@ -7,6 +7,9 @@ const auth = require("../middleware");
 router.route("/user/create")
     .post(user.createAccount);
 
+router.route("/user/create/test")
+    .post(user.createAccountDummy);
+
 router.route("/user/login")
     .post(user.userLogin);
 

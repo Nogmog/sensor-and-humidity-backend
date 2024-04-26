@@ -11,9 +11,10 @@ const app = express();
 
 app.use(express.json());
 // app.use(cors(corsOptions));
+app.use(cors());
 
 const router = express.Router();
-router.use(cors());
+// router.use(cors());
 
 app.get("/api", (req, res) => {
     res.json({ "status": "Online" });
