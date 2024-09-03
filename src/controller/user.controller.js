@@ -68,7 +68,7 @@ const createAccountDummy = (req, res) => {
                                 if (err) return res.status(500).send(err);
 
                                 let userGroups = result;
-                                console.log("ALL COLLECTED DATA:", user_id, userGroups)
+                                // console.log("ALL COLLECTED DATA:", user_id, userGroups)
 
                                 user.dummyAddDevicesToUserGroups(user_id, userGroups, (err) => {
                                     if (err) return res.status(500).send(err);
