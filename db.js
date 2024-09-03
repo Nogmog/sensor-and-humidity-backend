@@ -6,13 +6,9 @@ const pool = mysql.createPool({
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DB_NAME,
-    port: 6306,
+    port: 3307,
     connectionLimit: 10,
-    multipleStatements: true,
-    ssl: {
-        ca: fs.readFileSync("./DigiCertGlobalRootCA.crt.pem"),
-        rejectUnauthorized: false
-    }
+    multipleStatements: true
 });
 
 module.exports = pool;
