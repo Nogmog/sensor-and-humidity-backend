@@ -1,16 +1,16 @@
-# sensor-and-humidity-backend
+## sensor-and-humidity-backend
 # Dependency Versions
 Node.js 20.x
 
 
 # Required Environment Variables
-DATABASE_URL=DB URL
-USER=DB username
-PASSWORD=DB password
-DB_NAME=Database name
+DATABASE_URL = DB URL
+USER = DB username
+PASSWORD = DB password
+DB_NAME = Database name
 
 # Other possible changes
-Inside db.js to change port for accessing the database (default 6306)
+Inside db.js to change port for accessing the database (default 3306)
 
 
 # Install Dependencies
@@ -20,4 +20,5 @@ npm install
 npm run dev or netlify dev
 
 ## REQUIRES NETLIFY ACCOUNT ##
+[![Netlify Status](https://api.netlify.com/api/v1/badges/35f55154-c774-489c-8938-704534b0cf6d/deploy-status)](https://app.netlify.com/sites/mcubackend/deploys)
 # Sign up at https://www.netlify.com/
