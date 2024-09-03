@@ -12,8 +12,7 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     multipleStatements: true,
     ssl: {
-        ca: fs.readFileSync("./DigiCertGlobalRootCA.crt.pem"),
-        rejectUnauthorized: false
+        ca: fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")
     }
 });
 
