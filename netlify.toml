@@ -5,3 +5,8 @@
     to="/.netlify/functions/api/*"
     from="/api/*"
     status=200
+
+[[headers]]
+    for = "/*"
+    [headers.values]
+        Access-Control-Allow-Origin = "*"
