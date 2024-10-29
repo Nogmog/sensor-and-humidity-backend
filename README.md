@@ -1,9 +1,9 @@
 ## sensor-and-humidity-backend
-[![Netlify Status](https://api.netlify.com/api/v1/badges/35f55154-c774-489c-8938-704534b0cf6d/deploy-status)](https://app.netlify.com/sites/mcubackend/deploys)
+The front-end can be found here: https://github.com/Nogmog/temperature-and-sensor-website
+The website can be found here: https://stevenandsteven.com
 
 # Dependency Versions
 Node.js 20.x
-
 
 # Required Environment Variables
 DATABASE_URL = DB URL
@@ -23,4 +23,3 @@ npm run dev or netlify dev
 
 ## REQUIRES NETLIFY ACCOUNT ##
 [![Netlify Status](https://api.netlify.com/api/v1/badges/35f55154-c774-489c-8938-704534b0cf6d/deploy-status)](https://app.netlify.com/sites/mcubackend/deploys)
-# Sign up at https://www.netlify.com/
