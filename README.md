@@ -1,4 +1,6 @@
 ## sensor-and-humidity-backend
+[![Netlify Status](https://api.netlify.com/api/v1/badges/35f55154-c774-489c-8938-704534b0cf6d/deploy-status)](https://app.netlify.com/sites/mcubackend/deploys)
+
 # Dependency Versions
 Node.js 20.x
 
